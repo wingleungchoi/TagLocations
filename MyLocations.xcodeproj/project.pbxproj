@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C19D3A31B6CB7DD00AF1F68 /* LocationDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C19D3A21B6CB7DD00AF1F68 /* LocationDetailsViewController.swift */; };
 		0C3B19E81B5D4DF400CFF391 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3B19E71B5D4DF400CFF391 /* AppDelegate.swift */; };
-		0C3B19EA1B5D4DF400CFF391 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3B19E91B5D4DF400CFF391 /* FirstViewController.swift */; };
+		0C3B19EA1B5D4DF400CFF391 /* CurrentLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3B19E91B5D4DF400CFF391 /* CurrentLocationViewController.swift */; };
 		0C3B19EC1B5D4DF400CFF391 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3B19EB1B5D4DF400CFF391 /* SecondViewController.swift */; };
 		0C3B19EF1B5D4DF400CFF391 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C3B19ED1B5D4DF400CFF391 /* Main.storyboard */; };
 		0C3B19F11B5D4DF400CFF391 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C3B19F01B5D4DF400CFF391 /* Images.xcassets */; };
@@ -27,10 +28,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C19D3A21B6CB7DD00AF1F68 /* LocationDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsViewController.swift; sourceTree = "<group>"; };
 		0C3B19E21B5D4DF400CFF391 /* MyLocations.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyLocations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C3B19E61B5D4DF400CFF391 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C3B19E71B5D4DF400CFF391 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0C3B19E91B5D4DF400CFF391 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
+		0C3B19E91B5D4DF400CFF391 /* CurrentLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentLocationViewController.swift; sourceTree = "<group>"; };
 		0C3B19EB1B5D4DF400CFF391 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		0C3B19EE1B5D4DF400CFF391 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0C3B19F01B5D4DF400CFF391 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -80,12 +82,13 @@
 			isa = PBXGroup;
 			children = (
 				0C3B19E71B5D4DF400CFF391 /* AppDelegate.swift */,
-				0C3B19E91B5D4DF400CFF391 /* FirstViewController.swift */,
+				0C3B19E91B5D4DF400CFF391 /* CurrentLocationViewController.swift */,
 				0C3B19EB1B5D4DF400CFF391 /* SecondViewController.swift */,
 				0C3B19ED1B5D4DF400CFF391 /* Main.storyboard */,
 				0C3B19F01B5D4DF400CFF391 /* Images.xcassets */,
 				0C3B19F21B5D4DF400CFF391 /* LaunchScreen.xib */,
 				0C3B19E51B5D4DF400CFF391 /* Supporting Files */,
+				0C19D3A21B6CB7DD00AF1F68 /* LocationDetailsViewController.swift */,
 			);
 			path = MyLocations;
 			sourceTree = "<group>";
@@ -215,9 +218,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C19D3A31B6CB7DD00AF1F68 /* LocationDetailsViewController.swift in Sources */,
 				0C3B19EC1B5D4DF400CFF391 /* SecondViewController.swift in Sources */,
 				0C3B19E81B5D4DF400CFF391 /* AppDelegate.swift in Sources */,
-				0C3B19EA1B5D4DF400CFF391 /* FirstViewController.swift in Sources */,
+				0C3B19EA1B5D4DF400CFF391 /* CurrentLocationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +417,7 @@
 				0C3B1A051B5D4DF400CFF391 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0C3B1A061B5D4DF400CFF391 /* Build configuration list for PBXNativeTarget "MyLocationsTests" */ = {
 			isa = XCConfigurationList;
@@ -421,6 +426,7 @@
 				0C3B1A081B5D4DF400CFF391 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
