@@ -16,7 +16,7 @@ private let dateFormatter: NSDateFormatter = {
     return formatter
 }()
 
-class LocationDetailsViewController: UITableViewController {
+class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var categoryLabel: UILabel!
     @IBOutlet weak var latitudeLabel: UILabel!
@@ -26,8 +26,12 @@ class LocationDetailsViewController: UITableViewController {
     
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var placemark: CLPlacemark?
+    var descriptionText = ""
+    var categoryName = "No Category"
     
     @IBAction func done() {
+        println("Done Description")
+        println("Description '\(descriptionText)'")
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -52,14 +56,15 @@ class LocationDetailsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        descriptionTextView.text = ""
-        categoryLabel.text = ""
+        descriptionTextView.text = descriptionText
+        categoryLabel.text =  categoryName
         
         latitudeLabel.text = String(format: "%.8f", coordinate.latitude)
         longitudeLabel.text = String(format: "%.8f", coordinate.longitude)
         
         if let placemark = placemark {
             addressLabel.text = stringFromPlacemark(placemark)
+            println(stringFromPlacemark(placemark))
         } else {
             addressLabel.text = "No Address Found"
         }
@@ -77,5 +82,22 @@ class LocationDetailsViewController: UITableViewController {
     
     func formatDate(date: NSDate) -> String {
         return dateFormatter.stringFromDate(date)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PickCategory" {
+            let controller = segue.destinationViewController as! CategoryPickerViewController
+            controller.selectedCategoryName = categoryName
+        }
+    }
+
+}
+extension LocationDetailsViewController: UITextViewDelegate {
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        descriptionText = (textView.text as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        return true
+    }
+    func textViewDidEndEditing(textView: UITextView) {
+        descriptionText = textView.text
     }
 }
