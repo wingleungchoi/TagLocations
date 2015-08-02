@@ -23,6 +23,11 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBAction func categoryPickerDidPickCategory(segue: UIStoryboardSegue) {
+        let controller = segue.sourceViewController as! CategoryPickerViewController
+        categoryName = controller.selectedCategoryName
+        categoryLabel.text = categoryName
+    }
     
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0)
     var placemark: CLPlacemark?
