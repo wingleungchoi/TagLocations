@@ -35,9 +35,12 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     var categoryName = "No Category"
     
     @IBAction func done() {
-        println("Done Description")
-        println("Description '\(descriptionText)'")
-        dismissViewControllerAnimated(true, completion: nil)
+        let hubView = HudView.hudInView(navigationController!.view, animated: true)
+        hubView.text = "Tagged"
+        afterDelay(0.6, {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
+        
     }
     
     @IBAction func cancel() {
@@ -75,6 +78,9 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         }
     
         dateLabel.text = formatDate(NSDate())
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
+        gestureRecognizer.cancelsTouchesInView = false
+        tableView.addGestureRecognizer(gestureRecognizer)
     }
     
     func stringFromPlacemark(placemark: CLPlacemark) -> String{
@@ -93,7 +99,39 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         if segue.identifier == "PickCategory" {
             let controller = segue.destinationViewController as! CategoryPickerViewController
             controller.selectedCategoryName = categoryName
+            controller.coordinate = location!.coordinate
+            controller.placemark = placemark
         }
+    }
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if indexPath.section == 0 || indexPath.section == 1 {
+            return indexPath
+        } else {
+            return nil
+        }
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 0 && indexPath.section == 1 {
+            descriptionTextView.becomeFirstResponder()
+        }
+    }
+    
+    func hideKeyboard(gestureRecognizer: UIGestureRecognizer) {
+        let point = gestureRecognizer.locationInView(tableView)
+        println(point)
+        let indexPath = tableView.indexPathForRowAtPoint(point)
+        
+        if indexPath != nil && indexPath!.section == 0 && indexPath!.row == 0 {
+            return
+        }
+        descriptionTextView.resignFirstResponder()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        descriptionTextView.frame.size.width = view.frame.size.width - 30
     }
 
 }
