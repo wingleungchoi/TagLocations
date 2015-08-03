@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 private let dateFormatter: NSDateFormatter = {
     let formatter = NSDateFormatter()
@@ -33,6 +34,7 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     var placemark: CLPlacemark?
     var descriptionText = ""
     var categoryName = "No Category"
+    var managedObjectContext: NSManagedObjectContext!
     
     @IBAction func done() {
         let hubView = HudView.hudInView(navigationController!.view, animated: true)
@@ -99,8 +101,6 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         if segue.identifier == "PickCategory" {
             let controller = segue.destinationViewController as! CategoryPickerViewController
             controller.selectedCategoryName = categoryName
-            controller.coordinate = location!.coordinate
-            controller.placemark = placemark
         }
     }
     
