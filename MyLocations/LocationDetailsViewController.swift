@@ -34,11 +34,30 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     var placemark: CLPlacemark?
     var descriptionText = ""
     var categoryName = "No Category"
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+    var context: NSManagedObjectContext?
     var managedObjectContext: NSManagedObjectContext!
+    var date = NSDate()
     
     @IBAction func done() {
         let hubView = HudView.hudInView(navigationController!.view, animated: true)
         hubView.text = "Tagged"
+        
+        let location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext) as! Location
+        
+        location.locationDescription = descriptionText
+        location.category = categoryName
+        location.latitude = coordinate.latitude
+        location.longitude = coordinate.longitude
+        location.date = date
+        location.placemark = placemark
+        
+        var error: NSError?
+        if !managedObjectContext.save(&error) {
+            appDelegate.fatalCoreDataError(error)
+            return
+        }
+        
         afterDelay(0.6, {
             self.dismissViewControllerAnimated(true, completion: nil)
         })
@@ -79,7 +98,7 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
             addressLabel.text = "No Address Found"
         }
     
-        dateLabel.text = formatDate(NSDate())
+        dateLabel.text = formatDate(date)
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: Selector("hideKeyboard:"))
         gestureRecognizer.cancelsTouchesInView = false
         tableView.addGestureRecognizer(gestureRecognizer)

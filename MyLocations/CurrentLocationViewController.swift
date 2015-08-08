@@ -19,8 +19,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     @IBOutlet weak var getButton: UIButton!
     
     let locationManger = CLLocationManager()
-    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-    let context = appDelegate.managedObjectContext
     var location: CLLocation?
     var updatingLocation = false
     var lastLocationError: NSError?
@@ -233,6 +231,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             let controller = navigationController.topViewController as! LocationDetailsViewController
             controller.coordinate = location!.coordinate
             controller.placemark = placemark
+            controller.managedObjectContext = managedObjectContext
         }
     }
 }
