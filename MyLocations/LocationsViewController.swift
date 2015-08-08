@@ -13,47 +13,70 @@ import CoreLocation
 class LocationsViewController: UITableViewController {
     var managedObjectContext: NSManagedObjectContext!
     var locations = [Location]()
+    lazy var fetchedResultsController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest()
+        let entity = NSEntityDescription.entityForName("Location", inManagedObjectContext: self.managedObjectContext)
+        fetchRequest.entity = entity
+        let sortDesriptor = NSSortDescriptor(key: "date", ascending: true)
+        fetchRequest.fetchBatchSize = 20
+        let fetchedResultsController = NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: self.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: "Locations"
+        )
+        
+        fetchedResultsController.delegate = self
+        return fetchedResultsController
+    }()
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
+    deinit {
+        fetchedResultsController.delegate = nil
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
+        let sectionInfo = fetchedResultsController.sections![section] as! NSFetchedResultsSectionInfo
+        return sectionInfo.numberOfObjects
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        println("I am making a cell")
-        let cell = tableView.dequeueReusableCellWithIdentifier("LocationCell") as! UITableViewCell
-        let location = locations[indexPath.row]
-        let descriptionLabel = cell.viewWithTag(100) as! UILabel
-        descriptionLabel.text = location.locationDescription
-        
-        let addressLabel = cell.viewWithTag(101) as! UILabel
-        if let placemark = location.placemark {
-            addressLabel.text = "\(placemark.subThoroughfare) \(placemark.thoroughfare), " + "\(placemark.locality)"
-        } else {
-            addressLabel.text = ""
-        }
+        let cell = tableView.dequeueReusableCellWithIdentifier("LocationCell") as! LocationCell
+        let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+        cell.configureForLocation(location)
         return cell
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let fetchRequest = NSFetchRequest()
-        
-        let entity = NSEntityDescription.entityForName("Location", inManagedObjectContext: managedObjectContext)
-        fetchRequest.entity = entity
-        
-        let sortDescriptor = NSSortDescriptor(key: "date", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        
+        performFetch()
+    }
+    
+    func performFetch() {
         var error: NSError?
-        let foundObjects = managedObjectContext.executeFetchRequest(fetchRequest, error: &error)
-        
-        if foundObjects == nil {
+        if !fetchedResultsController.performFetch(&error) {
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.fatalCoreDataError(error)
-            return
         }
-        
-        locations = foundObjects as! [Location]
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "EditLocation" {
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let controller = navigationController.topViewController as! LocationDetailsViewController
+            controller.managedObjectContext = managedObjectContext
+            if let indexPath = tableView.indexPathForCell(sender as! UITableViewCell) {
+                let location = fetchedResultsController.objectAtIndexPath(indexPath) as! Location
+                controller.locationToEdit = location
+            }
+        }
+    }
+    
+}
+
+extension LocationsViewController: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        println("*** controllerWillChangeContent")
+        tableView.beginUpdates()
     }
 }
