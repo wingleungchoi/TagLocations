@@ -17,6 +17,8 @@
 		0C909F0A1B6DE5E400C522C9 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C909F091B6DE5E400C522C9 /* HudView.swift */; };
 		0CCEF7AA1B6DA1A70085302A /* CategoryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCEF7A91B6DA1A70085302A /* CategoryPickerViewController.swift */; };
 		0CD850121B6E0C8E002971ED /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD850111B6E0C8E002971ED /* Functions.swift */; };
+		0CD941B21B7734AC00356A3A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CD941B11B7734AC00356A3A /* MapKit.framework */; };
+		0CD941B41B7735AC00356A3A /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD941B31B7735AC00356A3A /* MapViewController.swift */; };
 		0CDEA4E61B6FAA1300471B9C /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEA4E41B6FAA1300471B9C /* DataModel.xcdatamodeld */; };
 		0CDEA4E81B6FB1DD00471B9C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CDEA4E71B6FB1DD00471B9C /* Location.swift */; };
 		0CE352281B76087700470682 /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE352271B76087700470682 /* LocationsViewController.swift */; };
@@ -49,6 +51,8 @@
 		0C909F091B6DE5E400C522C9 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		0CCEF7A91B6DA1A70085302A /* CategoryPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryPickerViewController.swift; sourceTree = "<group>"; };
 		0CD850111B6E0C8E002971ED /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
+		0CD941B11B7734AC00356A3A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		0CD941B31B7735AC00356A3A /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		0CDEA4E51B6FAA1300471B9C /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		0CDEA4E71B6FB1DD00471B9C /* Location.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		0CE352271B76087700470682 /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CD941B21B7734AC00356A3A /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +82,7 @@
 		0C3B19D91B5D4DF400CFF391 = {
 			isa = PBXGroup;
 			children = (
+				0CD941B11B7734AC00356A3A /* MapKit.framework */,
 				0C3B19E41B5D4DF400CFF391 /* MyLocations */,
 				0C3B19FC1B5D4DF400CFF391 /* MyLocationsTests */,
 				0C3B19E31B5D4DF400CFF391 /* Products */,
@@ -110,6 +116,7 @@
 				0CE352271B76087700470682 /* LocationsViewController.swift */,
 				0C3B19ED1B5D4DF400CFF391 /* Main.storyboard */,
 				0C3B19E51B5D4DF400CFF391 /* Supporting Files */,
+				0CD941B31B7735AC00356A3A /* MapViewController.swift */,
 			);
 			path = MyLocations;
 			sourceTree = "<group>";
@@ -246,6 +253,7 @@
 				0CDEA4E81B6FB1DD00471B9C /* Location.swift in Sources */,
 				0CD850121B6E0C8E002971ED /* Functions.swift in Sources */,
 				0CE3522C1B76164200470682 /* LocationCell.swift in Sources */,
+				0CD941B41B7735AC00356A3A /* MapViewController.swift in Sources */,
 				0CE3522A1B7615FC00470682 /* LocationCellTableViewCell.swift in Sources */,
 				0C3B19E81B5D4DF400CFF391 /* AppDelegate.swift in Sources */,
 				0CCEF7AA1B6DA1A70085302A /* CategoryPickerViewController.swift in Sources */,
