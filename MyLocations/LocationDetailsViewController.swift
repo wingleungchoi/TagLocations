@@ -64,6 +64,7 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         } else {
             hubView.text = "Tagged"
             location = NSEntityDescription.insertNewObjectForEntityForName("Location", inManagedObjectContext: managedObjectContext) as! Location
+            location.photoID = nil
         }
         
         
@@ -73,6 +74,20 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         location.longitude = coordinate.longitude
         location.date = date
         location.placemark = placemark
+        
+        if let image = image {
+            //1 
+            if !location.hasPhoto {
+                location.photoID = Location.nextPhotoID()
+            }
+            //2
+            let data = UIImageJPEGRepresentation(image, 0.5)
+            //3
+            var error: NSError?
+            if !data.writeToFile(location.photoPath, options: .DataWritingAtomic, error: &error) {
+                println("Error writing file: \(error)")
+            }
+        }
         
         var error: NSError?
         if !managedObjectContext.save(&error) {
