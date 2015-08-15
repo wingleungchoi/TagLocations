@@ -24,6 +24,8 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var addPhotoLabel: UILabel!
     @IBAction func categoryPickerDidPickCategory(segue: UIStoryboardSegue) {
         let controller = segue.sourceViewController as! CategoryPickerViewController
         categoryName = controller.selectedCategoryName
@@ -38,6 +40,7 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     var context: NSManagedObjectContext?
     var managedObjectContext: NSManagedObjectContext!
     var date = NSDate()
+    var image: UIImage?
     var locationToEdit: Location? {
         didSet {
             if let location = locationToEdit {
@@ -89,6 +92,12 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 && indexPath.row == 0 {
             return 88
+        } else if indexPath.section == 1 {
+            if imageView.hidden {
+                return 44
+            } else {
+                return imageView.frame.height + 20
+            }
         } else if indexPath.section == 2 && indexPath.row == 2{
             addressLabel.frame.size = CGSize(width: view.bounds.size.width - 115, height: 10000)
             addressLabel.sizeToFit()
@@ -157,7 +166,8 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         if indexPath.section == 0 && indexPath.section == 1 {
             descriptionTextView.becomeFirstResponder()
         } else if indexPath.section == 1 && indexPath.row == 0 {
-            choosePhotoFromLibrary()
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+            pickPhoto()
         }
     }
     
@@ -197,6 +207,11 @@ extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavi
         presentViewController(imagePicker, animated: true, completion: nil)
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        image = info[UIImagePickerControllerEditedImage] as? UIImage
+        if let image = image {
+            showImage(image)
+        }
+        tableView.reloadData()
         dismissViewControllerAnimated(true, completion: nil)
     }
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
@@ -210,6 +225,28 @@ extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavi
         presentViewController(imagePicker, animated: true, completion: nil)
     }
     func pickPhoto() {
-        if UIImagePickerController.i
+        println("Camera is ready? \(UIImagePickerController.isSourceTypeAvailable(.Camera))")
+        if true || UIImagePickerController.isSourceTypeAvailable(.Camera){
+            showPhotoMenu()
+        } else {
+            choosePhotoFromLibrary()
+        }
+    }
+    
+    func showPhotoMenu() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .Default, handler: {_ in self.takePhotoWithCamera()})
+        alertController.addAction(takePhotoAction)
+        let chooseFromLibraryAction = UIAlertAction(title: "Choose From Library", style: .Default, handler: {_ in self.choosePhotoFromLibrary()})
+        alertController.addAction(chooseFromLibraryAction)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+    func showImage(image: UIImage){
+        imageView.image = image
+        imageView.hidden = true
+        imageView.frame = CGRect(x: 10, y: 10, width: 260, height: ((image.size.height / image.size.width) * 260))
+        imageView.hidden = false
     }
 }
