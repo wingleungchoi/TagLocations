@@ -52,6 +52,7 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
             }
         }
     }
+    var observer: AnyObject!
     
     @IBAction func done() {
         let hubView = HudView.hudInView(navigationController!.view, animated: true)
@@ -89,28 +90,30 @@ class LocationDetailsViewController: UITableViewController, UITextViewDelegate {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    deinit {
+        println("*** deinit \(self)")
+        NSNotificationCenter.defaultCenter().removeObserver(observer)
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == 0 && indexPath.row == 0 {
+        switch (indexPath.section, indexPath.row) {
+        case(0, 0):
             return 88
-        } else if indexPath.section == 1 {
-            if imageView.hidden {
-                return 44
-            } else {
-                return imageView.frame.height + 20
-            }
-        } else if indexPath.section == 2 && indexPath.row == 2{
+        case(1, _):
+            return imageView.hidden ? 44 : (imageView.frame.height + 20)
+        case(2, 2):
             addressLabel.frame.size = CGSize(width: view.bounds.size.width - 115, height: 10000)
             addressLabel.sizeToFit()
             addressLabel.frame.origin.x = view.bounds.size.width - addressLabel.frame.size.width - 15
             return addressLabel.frame.size.height + 20
-        } else {
+        default:
             return 44
-        }
-        
+        }        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        listenForBackgroundNotification()
         
         if let location = locationToEdit {
             title = "Edit Location"
@@ -248,5 +251,15 @@ extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavi
         imageView.hidden = true
         imageView.frame = CGRect(x: 10, y: 10, width: 260, height: ((image.size.height / image.size.width) * 260))
         imageView.hidden = false
+    }
+    func listenForBackgroundNotification() {
+        observer = NSNotificationCenter.defaultCenter().addObserverForName(UIApplicationDidEnterBackgroundNotification, object: nil, queue: NSOperationQueue.mainQueue(), usingBlock: { [weak self] notifcation in
+            if let strongSelf = self {
+                if strongSelf.presentedViewController != nil {
+                    strongSelf.dismissViewControllerAnimated(false, completion: nil)
+                }
+                strongSelf.descriptionTextView.resignFirstResponder()
+            }
+        })
     }
 }
