@@ -92,7 +92,9 @@
                         <outlet property="addressLabel" destination="Qor-6Z-XEJ" id="qdh-8L-Jok"/>
                         <outlet property="getButton" destination="AAC-Xy-boH" id="oZK-do-wle"/>
                         <outlet property="latitudeLabel" destination="Mrs-GG-ssc" id="c7g-0e-AxS"/>
+                        <outlet property="latitudeTextLabel" destination="6Ux-Eg-45D" id="FdR-ud-s6E"/>
                         <outlet property="longitudeLabel" destination="fbk-q8-LUe" id="EyC-Dk-9rg"/>
+                        <outlet property="longitudeTextLabel" destination="YiE-Aj-SU2" id="5zY-0b-rgp"/>
                         <outlet property="messageLabel" destination="Xfo-wT-qpN" id="xZO-YA-n0M"/>
                         <outlet property="tagButton" destination="Mit-J4-lgx" id="Gep-BC-v3U"/>
                     </connections>
@@ -522,7 +524,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="HZJ-Cc-aV0"/>
+        <segue reference="Vor-Po-308"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="1" green="0.93333333330000001" blue="0.53333333329999999" alpha="1" colorSpace="calibratedRGB"/>
 </document>
