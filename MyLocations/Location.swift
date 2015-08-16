@@ -58,4 +58,16 @@ class Location: NSManagedObject, MKAnnotation {
         userDefaults.synchronize()
         return currentID
     }
+    
+    func removePhotoFile() {
+        if hasPhoto {
+            let fileManager = NSFileManager.defaultManager()
+            if fileManager.fileExistsAtPath(photoPath) {
+                var error: NSError?
+                if !fileManager.removeItemAtPath(photoPath, error: &error) {
+                    println("Error removing file: \(error!)")
+                }
+            }
+        }
+    }
 }
