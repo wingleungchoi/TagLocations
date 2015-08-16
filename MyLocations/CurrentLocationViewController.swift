@@ -221,8 +221,20 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     }
     
     func stringFromPlacemark(placemark: CLPlacemark) -> String {
-        return
-            "\(placemark.subThoroughfare) \(placemark.thoroughfare)\n" + "\(placemark.locality) \(placemark.administrativeArea)" + "\(placemark.postalCode)"
+        // 1
+        var line1 = ""
+        line1.addText(placemark.subThoroughfare)
+        line1.addText(placemark.thoroughfare, withSeparator: " ")
+        //4
+        var line2 = ""
+        line2.addText(placemark.locality)
+        line2.addText(placemark.administrativeArea, withSeparator: " ")
+        line2.addText(placemark.postalCode, withSeparator: " ")
+        if line1.isEmpty {
+            return line2 + "\n"
+        } else {
+            return line1 + "\n" + line2
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -234,5 +246,6 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             controller.managedObjectContext = managedObjectContext
         }
     }
+    
 }
 
