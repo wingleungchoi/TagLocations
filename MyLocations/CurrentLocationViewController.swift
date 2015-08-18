@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import CoreLocation
+import QuartzCore
 
 class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var messageLabel: UILabel!
@@ -19,6 +20,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     @IBOutlet weak var getButton: UIButton!
     @IBOutlet weak var latitudeTextLabel: UILabel!
     @IBOutlet weak var longitudeTextLabel: UILabel!
+    @IBOutlet weak var containerView: UIView!
     
     let locationManger = CLLocationManager()
     var location: CLLocation?
@@ -30,6 +32,17 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
     var lastGeocodingError: NSError?
     var timer: NSTimer?
     var managedObjectContext: NSManagedObjectContext!
+    var logoVisible = false
+   
+    lazy var logoButton: UIButton = {
+        let button = UIButton.buttonWithType(.Custom) as! UIButton
+        button.setBackgroundImage(UIImage(named: "Logo"), forState: .Normal)
+        button.sizeToFit()
+        button.addTarget(self, action: Selector("getLocation"), forControlEvents: .TouchUpInside)
+        button.center.x = CGRectGetMidX(self.view.bounds)
+        button.center.y = 220
+        return button
+    }()
     
     @IBAction func getLocation() {
         let authStatus: CLAuthorizationStatus = CLLocationManager.authorizationStatus()
@@ -48,6 +61,9 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             placemark = nil
             lastGeocodingError = nil
             startLocationManager()
+        }
+        if logoVisible {
+            hideLogoView()
         }
         updateLabels()
         configureGetButton()
@@ -178,7 +194,8 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             } else if updatingLocation {
                 statusMessage = "Searching..."
             } else {
-                statusMessage = "Tap 'Get My Location' to Start"
+                statusMessage = ""
+                showLogoView()
             }
             messageLabel.text = statusMessage
             latitudeTextLabel.hidden = true
@@ -251,6 +268,60 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
             controller.placemark = placemark
             controller.managedObjectContext = managedObjectContext
         }
+    }
+    
+    func showLogoView() {
+        if !logoVisible {
+            logoVisible = true
+            containerView.hidden = true
+            view.addSubview(logoButton)
+        }
+    }
+    func hideLogoView() {
+        if !logoVisible {return}
+        
+        logoVisible = false
+        containerView.hidden = false
+        
+        containerView.center.x = view.bounds.size.width * 2
+        containerView.center.y = 40 + (containerView.bounds.size.height / 2)
+        
+        let centerX = CGRectGetMidX(view.bounds)
+        
+        let panelMover = CABasicAnimation(keyPath: "position")
+        panelMover.removedOnCompletion =  false
+        panelMover.fillMode = kCAFillModeForwards
+        panelMover.duration = 0.6
+        panelMover.fromValue = NSValue(CGPoint: containerView.center)
+        panelMover.toValue = NSValue(CGPoint: CGPoint(x: centerX, y: containerView.center.y))
+        panelMover.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+        panelMover.delegate = self
+        containerView.layer.addAnimation(panelMover, forKey: "panelMover")
+        
+        let logoMover = CABasicAnimation(keyPath: "position")
+        logoMover.removedOnCompletion = false
+        logoMover.fillMode = kCAFillModeForwards
+        logoMover.duration = 0.5
+        logoMover.fromValue = NSValue(CGPoint: logoButton.center)
+        logoMover.toValue = NSValue(CGPoint: CGPoint(x: -centerX, y: logoButton.center.y))
+        logoMover.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        logoButton.layer.addAnimation(logoMover, forKey: "logoMover")
+        let logoRotator = CABasicAnimation(keyPath: "transform.rotation.z")
+        logoRotator.removedOnCompletion = false
+        logoRotator.fillMode = kCAFillModeForwards
+        logoRotator.duration = 0.5
+        logoRotator.fromValue = 0.0
+        logoRotator.toValue = -2 * M_PI
+        logoRotator.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseIn)
+        logoButton.layer.addAnimation(logoRotator, forKey: "logoRotator")
+    }
+    
+    override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+        containerView.layer.removeAllAnimations()
+        containerView.center.x = view.bounds.size.width / 2
+        containerView.center.y = 40 + containerView.bounds.size.height / 2
+        logoButton.layer.removeAllAnimations()
+        logoButton.removeFromSuperview()
     }
     
 }
